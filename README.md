@@ -30,9 +30,9 @@ var checkbox = function(selector, className, responses){
 	};
 	trait.ui[checkboxName] = selector;
 	trait.triggers[triggerSelector] = triggerEvent;
-	trait[eventFn] = function(){
+	trait[eventFn] = function(state){
 		trait.ui[checkboxName].toggleClass(className);
-		//should call pre and post functions as well as on/off
+		responses[state ? 'active' : 'inactive'].apply(this, arguments);
 	}
 	return trait;
 };
@@ -43,7 +43,10 @@ var checkbox = function(selector, className, responses){
 This pattern should make code reuse a breeze with marionette.
 
 ```js
-var checkboxTrait = checkbox('.checkbox', 'active', responses);
+var checkboxTrait = checkbox('.checkbox', 'wax', {
+	active: _.partial(alert, 'wax on'),
+	inactive: _.partial(alert, 'wax off') 
+});
 
 // Example view with checkbox trait
 var MyView = Backbone.Marionette.ItemView.extend({

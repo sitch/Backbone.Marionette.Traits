@@ -39,7 +39,17 @@
   Backbone.Marionette.View.prototype.withTraits = (function () {
     var extractors = [extract('ui', _.extend),
                       extract('triggers', _.extend),
-                      extract('initialize', stackFns)];
+                      extract('onBeforeRender', stackFns)
+                      extract('onRender', stackFns)
+                      extract('onDomRefresh', stackFns)
+                      extract('onShow', stackFns)
+                      extract('onBeforeClose', stackFns)
+                      extract('onClose', stackFns)
+
+                      //CollectionView Only
+                      extract('onBeforeItemAdded', stackFns)
+                      extract('onAfterItemAdded', stackFns)
+                      extract('onItemRemoved', stackFns)];
     return function () {
       var traits = Array.prototype.slice.apply(arguments);
 

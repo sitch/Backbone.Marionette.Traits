@@ -2,17 +2,20 @@
 
 Traits is designed to help you more efficiently write modular Marionette views.  By designing simple traits, you will have a much more modular and extensible codebase.
 
-##Usage:
+###Start with building a trait builder
+
+Builds a checkbox for a given selector and classname.
+May be instantiated multiple times in any given view.
 
 ```js
 // Factory for producing checkbox traits
-var checkboxTraitFactory = function(selector, className){
+var checkbox = function(selector, className, responses){
 
 	var cleanSelector = selector.replace('#', 'id-')
 								.replace('.', 'class-')
 								.replace('>', 'desc-')
 								.replace('<', 'ansc-');
-	
+	//var cleanSelector = sanitize(selector);
 	var checkboxName = 'checkbox-' + cleanSelector;
 	var triggerSelector = 'click ' + selector;
 	var triggerEvent = 'click:checkbox:' + selector;
@@ -29,18 +32,24 @@ var checkboxTraitFactory = function(selector, className){
 	trait.triggers[triggerSelector] = triggerEvent;
 	trait[eventFn] = function(){
 		trait.ui[checkboxName].toggleClass(className);
+		//should call pre and post functions as well as on/off
 	}
 	return trait;
 };
+```
 
-// Example Trait
-var checkboxTrait = checkboxTraitFactory('.checkbox', 'active');
+###Build the ItemView
 
-// Marionette View
+This pattern should make code reuse a breeze with marionette.
+
+```js
+var checkboxTrait = checkbox('.checkbox', 'active', responses);
+
+// Example view with checkbox trait
 var MyView = Backbone.Marionette.ItemView.extend({
 	initialize: function(){
 		...
 	}
 }).withTraits(checkboxTrait);
-
 ```
+

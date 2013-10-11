@@ -5,8 +5,7 @@ Traits is designed to help you more efficiently write modular Marionette views. 
 ##Usage:
 
 ```js
-// Example Trait
-
+// Factory for producing checkbox traits
 var checkboxTraitFactory = function(selector, className){
 
 	var cleanSelector = selector.replace('#', 'id-')
@@ -34,6 +33,7 @@ var checkboxTraitFactory = function(selector, className){
 	return trait;
 };
 
+// Example Trait
 var checkboxTrait = checkboxTraitFactory('.checkbox', 'active');
 
 // Marionette View
@@ -41,6 +41,6 @@ var MyView = Backbone.Marionette.ItemView.extend({
 	initialize: function(){
 		...
 	}
-}).withTraits(checkbox);
+}).withTraits(checkboxTrait);
 
 ```
